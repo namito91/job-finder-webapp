@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Listing;
+use Illuminate\Validation\Rule;
+
 
 class ListingController extends Controller
 {
@@ -13,7 +15,7 @@ class ListingController extends Controller
 
         return view('listings.index', [
 
-            'listings' => Listing::all()
+            'listings' => Listing::latest()->filter(request(['tag', 'search']))->paginate(2)
 
         ]);
     }
@@ -30,5 +32,38 @@ class ListingController extends Controller
                 'listing' => $listing
             ]
         );
+    }
+
+
+    // show create form
+    public function create()
+    {
+        // solo retorna la viste de create form
+        return view(
+            'listings.create'
+        );
+    }
+
+
+    // store listing form data
+    public function store(Request $request)
+    {
+        $formfields = $request->validate([
+
+            'title' => 'required',
+            // busca en db "listing" , la tabla 'company',para que no se ingrese una misma compañia
+            'company' => ['required', Rule::unique('listings', 'company')],
+            'location' => 'required',
+            'website' => 'required',
+            'email' => ['required', 'email'],
+            'tags' => 'required',
+            'description' => 'required',
+        ]);
+
+
+        // inserta en la db una nueva fila , con los datos del formulario
+        Listing::create($formfields);
+
+        return redirect('/')->with("message", "listing created");
     }
 }

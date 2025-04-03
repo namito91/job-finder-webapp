@@ -34,14 +34,6 @@ Route::get('/search', function (Request $request) {
 
 // ----------------------------------------------------------------
 
-// all listings
-Route::get('/', [ListingController::class, 'index']);
-
-
-// single listing 
-Route::get('/listing/{listing}', [ListingController::class, 'show']);
-
-
 /**
  * common resource routes :
  * index, show all items
@@ -52,3 +44,18 @@ Route::get('/listing/{listing}', [ListingController::class, 'show']);
  * edit, show form to update an item,
  * update , update an item,
  */
+
+
+
+
+// show create item form
+Route::get('/listing/create', [ListingController::class, 'create']);
+
+// store listing data
+Route::post('/listing', [ListingController::class, 'store']);
+
+// all listings
+Route::get('/', [ListingController::class, 'index']);
+
+// single listing 
+Route::get('/listing/{listing}', [ListingController::class, 'show']);
