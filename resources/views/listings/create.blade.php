@@ -10,7 +10,7 @@
                         <p class="mb-4">Post a gig to find a developer</p>
                     </header>
 
-                    <form method="POST" action="/listing">
+                    <form method="POST" action="/listings" enctype="multipart/form-data">
                         
                         @csrf 
                         
@@ -133,7 +133,9 @@
 
                             @enderror
                         </div>
-
+                        
+                        
+                        <!-- logo file -->
                         <div class="mb-6">
                             <label for="logo" class="inline-block text-lg mb-2">
                                 Company Logo

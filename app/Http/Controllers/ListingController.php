@@ -48,6 +48,7 @@ class ListingController extends Controller
     // store listing form data
     public function store(Request $request)
     {
+        // dd($request->file('logo'));
         $formfields = $request->validate([
 
             'title' => 'required',
@@ -60,6 +61,13 @@ class ListingController extends Controller
             'description' => 'required',
         ]);
 
+
+        // store the logo ,if any is provided
+        if ($request->hasFile('logo')) {
+
+            // almacena el logo , en la carpeta /storage/app/public/app/logos
+            $formfields['logo'] = $request->file('logo')->store('logos', 'public');
+        }
 
         // inserta en la db una nueva fila , con los datos del formulario
         Listing::create($formfields);
